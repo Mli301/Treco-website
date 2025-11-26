@@ -1,0 +1,26 @@
+# cpanel.yml
+#
+# This repository file contains a small deployment helper for cPanel/Elite Host.
+# cPanel's Git Version Control doesn't always automatically run repository YAML files,
+# so the recommended usage is to point cPanel's "Deployment script" (in Git Version
+# Control -> Manage) at the script below: ./cpanel-deploy.sh
+#
+# What this does:
+# 1) Installs Node dependencies (npm ci)
+# 2) Builds the Vite app (npm run build)
+# 3) Copies the build output (dist/public) into the cPanel document root ($HOME/public_html)
+#
+# If your document root is different on Elite Host (for example /domains/treco.co.za/public_html),
+# edit the `DEST` variable in `cpanel-deploy.sh` or set the path in cPanel accordingly.
+
+deployment:
+  script: ./cpanel-deploy.sh
+  description: |
+    Run cPanel deployment script that installs deps, builds the client and copies
+    the static `dist/public` output to the document root. To use:
+    1. In cPanel, go to Git Version Control -> Manage (for your repository) ->
+       set the Deployment Script to the path `./cpanel-deploy.sh` (this file) and
+       enable automatic deploy on push if desired.
+    2. Ensure Node and npm are available on the cPanel account (most cPanel
+       systems have Node.js support via Application Manager). If not, use
+       the local build + FTP upload or GitHub Actions approach.
