@@ -1,5 +1,28 @@
----
+# .cpanel.yml
+#
+# This file is a cPanel-friendly deployment descriptor that tells cPanel to run
+# the repository deployment script when the repository is deployed/updated.
+#
+# Note: cPanel's Git Version Control and Application Manager implementations
+# vary across hosting providers. Elite Host (cPanel) commonly supports either a
+# repository 'Deployment Script' configured in the control panel or an
+# optional .cpanel.yml that points to a script. If your host requires a
+# different format, paste their documentation here and I will adapt this file.
+
 deployment:
-  tasks:
-    - export DEPLOYPATH=/home/trecoco1/public_html/
-    - /bin/cp -R * $DEPLOYPATH
+  # the script cPanel should run after pulling the repo
+  script: ./cpanel-deploy.sh
+
+  # optional description shown in cPanel UI
+  description: |
+    Build and deploy the Vite site to the cPanel document root.
+    The script will run the following steps:
+      1) install npm dependencies (npm ci)
+      2) build the client (npm run build)
+      3) copy the built static files from dist/public into $HOME/public_html
+
+  # Note: If Elite Host requires a different document root or additional
+  # environment setup (node version, npm path), edit `cpanel-deploy.sh` or
+  # configure the server's Application Manager. Typical adjustments:
+  #   - set DEST to /domains/treco.co.za/public_html
+  #   - install Node via cPanel Application Manager or ensure /usr/local/bin/npm is available
